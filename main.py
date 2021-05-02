@@ -89,8 +89,11 @@ class BeatmapMgr():
 
     def read_info(self):
         json_path = os.path.join(os.getcwd(), "osu_info.json")
-        with open(json_path,"r") as f:
-            self.osu_info = json.load(f)
+        try:
+            with open(json_path,"r") as f:
+                self.osu_info = json.load(f)
+        except:
+            print("No json file found...")
 
     def select_info(self, params):
         self.selected_info = []
