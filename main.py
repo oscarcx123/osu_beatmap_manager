@@ -146,30 +146,33 @@ class BeatmapMgr():
     def remove_sv(self):
         for idx in range(len(self.selected_info)):
             print(f"#{idx+1} {self.selected_info[idx]['artist']} - {self.selected_info[idx]['title']} ({self.selected_info[idx]['creator']}) [{self.selected_info[idx]['version']}]")
-            with open(self.selected_info[idx]['path'], "r") as f:
-                lines = f.readlines()
-            with open(self.selected_info[idx]['path'], "w") as f:
-                idx = 0
-                found = False
-                init_timing_line = False
-                for line in lines:
-                    if line.strip("\n") == "[TimingPoints]":
-                        found = True
-                        init_timing_line = True
+            try:
+                with open(self.selected_info[idx]['path'], "r") as f:
+                    lines = f.readlines()
+                with open(self.selected_info[idx]['path'], "w") as f:
+                    idx = 0
+                    found = False
+                    init_timing_line = False
+                    for line in lines:
+                        if line.strip("\n") == "[TimingPoints]":
+                            found = True
+                            init_timing_line = True
+                            f.write(line)
+                            continue
+                        if found:
+                            if init_timing_line:
+                                init_timing_line = False
+                                f.write(line)
+                                continue
+                            if line.strip("\n") != "":
+                                continue
+                            else:
+                                found = False
+                                f.write(line)
+                                continue
                         f.write(line)
-                        continue
-                    if found:
-                        if init_timing_line:
-                            init_timing_line = False
-                            f.write(line)
-                            continue
-                        if line.strip("\n") != "":
-                            continue
-                        else:
-                            found = False
-                            f.write(line)
-                            continue
-                    f.write(line)
+            except:
+                print("Can't read file, skipping...")
 
 
 print("OsuBeatmapMgr V1.0")
