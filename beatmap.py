@@ -6,6 +6,9 @@ from tkinter import ttk
 
 class Beatmap():
     def __init__(self) -> None:
+        pass
+
+    def launch(self):
         self.create_ui()
         self.connnect_db()
         self.mw.protocol("WM_DELETE_WINDOW", self.on_quitting)
@@ -15,6 +18,10 @@ class Beatmap():
     def create_ui(self):
         self.mw = Tk()
         self.mw.geometry("600x350")
+        self.mw.title("Osu Beatmap Manager")
+
+        self.f1 = Frame(self.mw)
+        self.f2 = Frame(self.mw)
 
         # Add a Treeview widget
         self.tree = ttk.Treeview(self.mw, column=("title_unicode", "mapper", "difficulty", "star_mania"), show='headings', height=10)
@@ -32,16 +39,18 @@ class Beatmap():
         self.verscrlbar.pack(side=RIGHT, fill=Y)
         self.tree.configure(yscrollcommand=self.verscrlbar.set)
 
-        self.tree.pack()
+        self.tree.pack(anchor=W, padx=10)
 
         self.query_entry = StringVar()
         self.matches_found = StringVar()
-        self.matches_found.set("blablabla")
-        self.l1 = Label(self.mw, text="", width=2).pack(side=LEFT)
-        self.e1 = Entry(self.mw, textvariable = self.query_entry, width=70).pack(side=LEFT)
-        self.l2 = Label(self.mw, text="", width=2).pack(side=LEFT)
-        self.b1 = Button(self.mw, text="Search", command=self.exec_query, width=10).pack(side=LEFT)
-        self.l3 = Label(self.mw, textvariable = self.matches_found).pack(side=BOTTOM)
+        self.matches_found.set("Search just like you do in osu!")
+        self.e1 = Entry(self.f1, textvariable = self.query_entry, width=70).pack(side=LEFT)
+        self.l1 = Label(self.f1, text="", width=2).pack(side=LEFT)
+        self.b1 = Button(self.f1, text="Search", command=self.exec_query, width=10).pack(side=LEFT)
+        self.l2 = Label(self.f2, textvariable = self.matches_found).pack(side=LEFT)
+
+        self.f1.pack(anchor=W, padx=10)
+        self.f2.pack(anchor=W, padx=10)
 
     def connnect_db(self):
         self.sql = sqlite3.connect("cache.db")
@@ -156,5 +165,4 @@ class Beatmap():
         self.mw.destroy()
 
 beatmap = Beatmap()
-
-
+beatmap.launch()
