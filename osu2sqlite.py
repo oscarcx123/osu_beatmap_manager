@@ -7,8 +7,8 @@ class GenerateDB():
     def __init__(self) -> None:
         pass
 
-    def generate(self):
-        self.create_db("osu!.db")
+    def generate(self, osu_db):
+        self.create_db(osu_db)
 
     def create_db(self, filename):
         sql = sqlite3.connect("cache.db")
@@ -196,6 +196,7 @@ class GenerateDB():
             sql.commit()
             sql.close()
 
-
-generate_db = GenerateDB()
-generate_db.generate()
+if __name__ == "__main__":
+    osu_db = "osu!.db"
+    generate_db = GenerateDB()
+    generate_db.generate(osu_db)

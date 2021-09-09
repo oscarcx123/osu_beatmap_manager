@@ -2,3 +2,4 @@
 __pycache__
 osu!.db
 cache.db
+cache.db-journal
